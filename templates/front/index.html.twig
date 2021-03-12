@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Home{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="example-wrapper">
+        <h1>Homepage </h1>
+
+        {% if app.user %}
+            Hello <strong>{{ app.user.email}}</strong>
+        {% endif %}
+
+    </div>
+{% endblock %}

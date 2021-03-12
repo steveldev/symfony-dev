@@ -15,10 +15,16 @@ https://gist.github.com/joyrexus/16041f2426450e73f5df9391f7f7ae5f
 
 ## Contenu des fichiers .env.{env}.local
     DATABASE_URL=mysql://root@127.0.0.1:3306/database_name
-    APP_SECRET=d673b72c1e6161b3ba8867a665809781
     
-# Démarrage du serveur local 
-    php -S localhost:8000 -t public
+
+---
+# Git : push des fichiers sur git
+    git init
+    git add .
+    git commit -m "initial commit"
+    git remote add origin https://github.com/steveldev/symfony-dev.git
+    git push -u origin master
+
 ---
 # Création du fichier MakeFile
     Voir fichier Makefile (https://github.com/steveldev/src/blob/master/symfony/Makefile)
@@ -26,11 +32,6 @@ https://gist.github.com/joyrexus/16041f2426450e73f5df9391f7f7ae5f
 Exemple: https://github.com/TBoileau/key-privilege/blob/develop/Makefile
 ...
 
----
-# Création des fixtures
-    composer require orm-fixtures --dev
-    php bin/console make:fixtures    
-    php bin/console doctrine:fixtures:load   
 
 ---
 # Configuration du projet
@@ -38,7 +39,7 @@ Exemple: https://github.com/TBoileau/key-privilege/blob/develop/Makefile
     config/packages/translation.yaml
 
 ## Configuration du format des dates
-...
+https://symfony.com/blog/new-in-symfony-2-7-default-date-and-number-format-configuration
 
 ## Configuration des formulaires (bootstrap)
     Fichier : config/packages/twig.yaml
@@ -47,28 +48,39 @@ Exemple: https://github.com/TBoileau/key-privilege/blob/develop/Makefile
             - 'bootstrap_4_layout.html.twig'
 
 
+---
+## Création du controller principal
+    php bin/console make:controller Default
+
+# Démarrage du serveur local 
+    php -S localhost:8000 -t public
+
 
 ---
 # Création du module user
     php bin/console make:user
     php bin/console make:auth
     php bin/console make:registration-form
+## Reset password
+    composer require symfonycasts/reset-password-bundle    
     php bin/console make:reset-password
 
 ## Modules user optionnels 
 ### Vérification par email
     composer require symfonycasts/verify-email-bundle
 
-### Mise à jour de la base de données
-    php bin/console make:migration
-    php bin/console doctrine:migrations:migrate
-
-
 ## Configuration du fichier config/packages/security.yaml
     access_control:
-        - { path: ^/mon-compte, roles: ROLE_USER }
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/account, roles: ROLE_USER }
+        #- { path: ^/admin, roles: ROLE_ADMIN }
+
+---
+# Création des fixtures
+    composer require orm-fixtures --dev
+    php bin/console doctrine:fixtures:load   
+    [voir : ](./src/DataFixtures/UserFixtures.php)
 ...
+
 
 ---
 # Création des tests
@@ -81,8 +93,6 @@ php bin/phpunit --coverage-html ./coverage
 ---
 # Front-end
 
-## Création du controller principal
-    php bin/console make:controller Default
 
 ## Installation de Webpack Encore
     composer require symfony/webpack-encore-bundle
@@ -118,14 +128,6 @@ php bin/phpunit --coverage-html ./coverage
 ## Build des assets Webpack Encore
     yarn run encore production
 
-
----
-# Git : push des fichiers sur git
-    git init
-    git add .
-    git commit -m "initial commit"
-    git remote add origin https://github.com/username/nom_depot.git
-    git push -u origin main
 
 ---
 # Configuration de l'intégration continue avec Github
