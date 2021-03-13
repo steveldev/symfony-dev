@@ -78,7 +78,7 @@ https://symfony.com/blog/new-in-symfony-2-7-default-date-and-number-format-confi
 # Création des fixtures
     composer require orm-fixtures --dev
     php bin/console doctrine:fixtures:load   
-    [voir : ](./src/DataFixtures/UserFixtures.php)
+    voir : ./src/DataFixtures/UserFixtures.php
 ...
 
 
