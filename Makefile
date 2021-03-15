@@ -41,6 +41,10 @@ clear:
 analyze : 
 	make analyze-dev
 analyze-dev:
-	./vendor/bin/phpcs -p
-	./vendor/bin/phpcbf -p 
+	./vendor/bin/phpcs -p src
+	./vendor/bin/phpcbf -p src
+	.vendor/bin/phpstan src
 
+.PHONY: install
+install:
+	composer install
