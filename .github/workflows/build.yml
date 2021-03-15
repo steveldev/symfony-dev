@@ -30,7 +30,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '12'
-          registry-url: npm.fontawesome.com
       - run: yarn install    
       - name: Yarn build
         run: yarn run encore production
