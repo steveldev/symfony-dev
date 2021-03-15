@@ -23,10 +23,18 @@ clear:
 analyze : 
 	make analyze-dev
 analyze-dev:
+	npm audit
+	composer valid
+	php bin/console doctrine:schema:valid --skip-sync
 	./vendor/bin/phpcs -p src
 	./vendor/bin/phpcbf -p src
 	.vendor/bin/phpstan src
 
 .PHONY: install
 install:
-	composer install
+	composer install	
+	make env
+
+env:	
+	cp .env.dist .env.dev.local
+	cp .env.dist .env.test.local

@@ -17,7 +17,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: Password1234
         ports:
           - 3306:3306
     steps:
@@ -34,17 +34,7 @@ jobs:
       - name: Check PHP Version
         run: php -v
 
-      ## —— Yarn ————————————————————————————————————————————————————————————
-      - name: Yarn install
-        uses: actions/setup-node@v2
-        with:
-          node-version: '12'
-      - run: yarn install   
-
-      - name: Yarn build
-        run: yarn run encore production
-
-      # —— Composer  —————————————————————————————————————————————————————————
+      # Composer 
       #- name: Validate composer.json and composer.lock
         #run: composer validate
 
@@ -62,19 +52,20 @@ jobs:
       - name: Install Composer dependencies
         run: composer install
 
-      # —— Symfony  ——————————————————————————————————————————————————————————
-      #- name: Check Symfony requirements
-      #  run: vendor/bin/requirements-checker
+      ## Yarn
+      - name: Yarn install
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - run: yarn install   
 
-      #- name: Check the Symfony console
-      #  run: bin/console about
+      - name: Yarn build
+        run: yarn run encore production
 
-      # Can't handle PHP8 for now
-      # - name: Coding standards checks (php_codesniffer + php-cs-fixer)
-      #   run: make analyze
-      #   if: matrix.php-versions == '7.4'
-
-      ## —— Tests  ———————————————————————————————————————————————————————————
+      ## Tests  
+      - name: Load env files
+        run: make env
+        
       - name: Load Doctrine fixtures 
         run: make fixtures-test
 
