@@ -35,7 +35,7 @@ jobs:
         run: yarn run encore production
 
       # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
-      - name: Validate composer.json and composer.lock
+      #- name: Validate composer.json and composer.lock
         #run: composer validate
 
       - name: Get composer cache directory
