@@ -6,23 +6,31 @@ on:
 jobs:
   symfony:
     name: Symfony 5.2 (PHP ${{ matrix.php-versions }})    
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: true
+      matrix:
+        operating-system: [ubuntu-latest]
+        #php-versions: ['7.4', '8.0']
+        php-versions: ['7.4']
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
-    strategy:
-      fail-fast: true
-      matrix:
-        #php-versions: ['7.4', '8.0']
-        php-versions: ['7.4']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, ctype, iconv, intl
+          coverage: xdebug
+
       - name: Check PHP Version
         run: php -v
 
@@ -52,7 +60,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        run: make install
+        run: composer install
 
       # —— Symfony  ——————————————————————————————————————————————————————————
       - name: Check Symfony requirements
@@ -71,5 +79,4 @@ jobs:
         run: make fixtures-test
 
       - name: Run functionnal and unit tests
-        run: 
-          ./vendor/bin/phpunit 
+        run: php bin/phpunit 
