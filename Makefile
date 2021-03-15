@@ -1,20 +1,3 @@
-.PHONY: dev
-
-dev:
-	make prepare-dev
-	make fixtures-dev
-
-prepare-dev:
-	php bin/console doctrine:database:drop --if-exists --force --env=dev
-	php bin/console doctrine:database:create --env=dev
-	php bin/console doctrine:schema:update --force --env=dev
-	
-fixtures-dev:
-	php bin/console doctrine:fixtures:load -n --env=dev
-
-clear-cache:
-	php bin/console c:c --env=dev
-
 
 .PHONY: tests
 tests:
@@ -35,7 +18,6 @@ coverage:
 
 clear:
 	php bin/console c:c --env=test
-
 
 .PHONY: analyze
 analyze : 
