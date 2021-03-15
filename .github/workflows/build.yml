@@ -69,15 +69,6 @@ jobs:
       - name: Load tests
         run: make tests
         
-      - name: Load Database 
-        run: make prepare-test
-
-      - name: Load Doctrine fixtures 
-        run: make fixtures-test
-
-      - name: Run functionnal and unit tests
-        run: php bin/phpunit 
-
       ## Analyze
       - name: Run code analyze
         run: make analyze
