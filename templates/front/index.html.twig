@@ -10,5 +10,9 @@
         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae, numquam voluptates porro, fugit alias consequuntur sunt minima delectus cumque illo nam, et ut. Eum aspernatur dignissimos veniam magnam, iste exercitationem?</p>
         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae, numquam voluptates porro, fugit alias consequuntur sunt minima delectus cumque illo nam, et ut. Eum aspernatur dignissimos veniam magnam, iste exercitationem?</p>
         <a href="https://github.com/steveldev/symfony-dev" title="View on github" target="_blank" class="btn btn-light btn-outline-dark"><i class="fab fa-github me-2"></i> Github : symfony-dev</a>
+        
+        <a href="file://{{ coverage}}" title="afficher le coverage" target="_blank" class="btn btn-light btn-outline-dark ms-4"><i class="fas fa-tasks me-2"></i> Code coverage</a>
+    
+        {% include('front/docs.html.twig') %}
     </div>
 {% endblock %}

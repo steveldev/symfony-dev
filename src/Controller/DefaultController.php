@@ -13,7 +13,12 @@ class DefaultController extends AbstractController
      */
     public function index(): Response
     {
+
+        $coverage = $projectRoot = $this->getParameter('kernel.project_dir');
+        $coverage .= '\coverage\index.html';
+
         return $this->render('front/index.html.twig', [
+            'coverage' => $coverage,
         ]);
     }
 }

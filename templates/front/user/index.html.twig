@@ -9,11 +9,8 @@
             <h1>Account </h1>
             <a href="{{ path('app_logout') }}" title="Logout" class="btn btn-secondary my-2">Logout</a>          
         </div>
-
-
+        <a href="{{ path('app_forgot_password_request') }}" title="Change password">Change password</a>
         {{ form(form) }}
-
-       
        
     </div>
 {% endblock %}

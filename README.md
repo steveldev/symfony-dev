@@ -1,6 +1,5 @@
 # Sommaire 
-## Toggle 
-https://gist.github.com/joyrexus/16041f2426450e73f5df9391f7f7ae5f
+
 
 # Création du projet
     composer create-project symfony/website-skeleton MyProject
@@ -28,10 +27,6 @@ https://gist.github.com/joyrexus/16041f2426450e73f5df9391f7f7ae5f
 ---
 # Création du fichier MakeFile
     Voir fichier Makefile (https://github.com/steveldev/src/blob/master/symfony/Makefile)
-
-Exemple: https://github.com/TBoileau/key-privilege/blob/develop/Makefile
-...
-
 
 ---
 # Configuration du projet
@@ -83,12 +78,25 @@ https://symfony.com/blog/new-in-symfony-2-7-default-date-and-number-format-confi
 
 
 ---
+# Installation des analiseurs
+
 # Création des tests
+## PHP code sniffer + cbf
+    composer require "squizlabs/php_codesniffer=*" --dev
+## PHP stan    
+    composer require phpstan/phpstan --dev
+
+## Installation des dépendances
+    composer require --dev symfony/browser-kit symfony/css-selector
 
 ## Initialisation des tests
-php bin/phpunit
-php bin/phpunit --coverage-html ./coverage
+    php bin/phpunit
+    php bin/phpunit --coverage-html ./coverage
 
+### Analyse du code
+    ./vendor/bin/phpcs
+    ./vendor/bin/phpcbf
+    ./vendor/bin/phpstan src public 
 
 ---
 # Front-end
@@ -131,8 +139,7 @@ php bin/phpunit --coverage-html ./coverage
 
 ---
 # Configuration de l'intégration continue avec Github
-https://github.com/TBoileau/key-privilege/actions/workflows/continuous_integration.yml
-
+./.github/workflows/build.yml
 --- 
 # More : 
 
