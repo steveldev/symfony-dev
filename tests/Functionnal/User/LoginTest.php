@@ -33,24 +33,23 @@ class UserLoginTest extends WebTestCase
     public function testloginPageWithLoggedUser()
     {
         $client = static::createClient();
+        $urlGenerator = $client->getContainer()->get("router");
         
         $userRepository = static::$container->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@reseau-net.fr');
         $client->loginUser($testUser);
 
-        $client->request('GET', '/login');
-        $client->followRedirect();
-        //$this->assertRouteSame("user_account");
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $client->request('GET', $urlGenerator->generate("app_login"));
+        $this->assertResponseRedirects($urlGenerator->generate("user_account"));
     }
 
     public function testloginPageWithValidData()
     {
         $client = static::createClient();
+        $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request('GET', $urlGenerator->generate("app_login"));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
 
         $form = $crawler->filter('form')->form([
             'email'=> 'admin@reseau-net.fr',
@@ -58,18 +57,16 @@ class UserLoginTest extends WebTestCase
         ]);
 
         $client->submit($form);
-        $client->followRedirect();
-        $this->assertRouteSame("user_account");
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertResponseRedirects($urlGenerator->generate("user_account"));
     }
 
     public function testloginPageWithBadEmail()
     {
         $client = static::createClient();
+        $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request('GET', $urlGenerator->generate("app_login"));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
 
         $form = $crawler->filter('form')->form([
             'email'=> 'fail@email.fr',
@@ -87,7 +84,8 @@ class UserLoginTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/login');
+        $urlGenerator = $client->getContainer()->get("router");
+        $crawler = $client->request('GET', $urlGenerator->generate("app_login"));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $form = $crawler->filter('form')->form([
@@ -103,8 +101,9 @@ class UserLoginTest extends WebTestCase
     public function testloginPageWithBadCSRF()
     {
         $client = static::createClient();
+        $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request('GET', $urlGenerator->generate("app_login"));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
 
@@ -123,7 +122,8 @@ class UserLoginTest extends WebTestCase
     public function testlogoutPage()
     {
         $client = static::createClient();
-        $client->request('GET', '/logout');
+        $urlGenerator = $client->getContainer()->get("router");
+        $client->request('GET', $urlGenerator->generate("app_logout"));
 
         $client->followRedirect();
         $this->assertRouteSame("home");

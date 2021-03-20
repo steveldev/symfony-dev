@@ -9,8 +9,11 @@
             <h1>Account </h1>
             <a href="{{ path('app_logout') }}" title="Logout" class="btn btn-secondary my-2">Logout</a>          
         </div>
-        <a href="{{ path('app_forgot_password_request') }}" title="Change password">Change password</a>
         {{ form(form) }}
        
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('app_forgot_password_request') }}" title="Change password" class="py-2">Change password</a>
+            <button type="submit" class="btn btn-success my-2">Save</button>
+        </div>
     </div>
 {% endblock %}

@@ -12,8 +12,8 @@ class RegistrationTest extends WebTestCase
     {
 
         $client = static::createClient();
-
-        $crawler = $client->request('GET', '/register');
+        $urlGenerator = $client->getContainer()->get("router");
+        $crawler = $client->request('GET', $urlGenerator->generate("app_register"));
 
         $userRepository = static::$container->get(UserRepository::class);
         $users = $userRepository->findAll();
@@ -28,9 +28,7 @@ class RegistrationTest extends WebTestCase
         ]);
 
         $client->submit($form);
-
         $client->followRedirect(); // is not redirected if user exists
-
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }

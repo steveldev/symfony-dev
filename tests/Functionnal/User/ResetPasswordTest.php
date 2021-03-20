@@ -2,26 +2,31 @@
 
 namespace App\Tests\User;
 
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ResetPasswordTest extends WebTestCase
 {
-
+    // exemple : email reset : http://localhost:8000/reset-password/reset/RDalwjKOOWRqhIxq5kNdQ12BKUOwMbD7Bl4R3GUb
     public function testResetPasswordRoute()
     {
         $client = static::createClient();
+        $urlGenerator = $client->getContainer()->get("router");
+        $client->request('GET', $urlGenerator->generate("app_forgot_password_request"));
 
-        $client->request('GET', '/reset-password');
-        $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
     public function testResetPasswordWithValidEmail()
     {
         $client = static::createClient();
+        $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request('GET', '/reset-password');
+        $crawler = $client->request('GET', $urlGenerator->generate("app_forgot_password_request"));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $form = $crawler->filter('form')->form([
@@ -36,8 +41,8 @@ class ResetPasswordTest extends WebTestCase
     public function testResetPasswordWhitBadEmail()
     {
         $client = static::createClient();
-
-        $crawler = $client->request('GET', '/reset-password');
+        $urlGenerator = $client->getContainer()->get("router");
+        $crawler = $client->request('GET', $urlGenerator->generate("app_forgot_password_request"));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $form = $crawler->filter('form')->form([
@@ -52,7 +57,8 @@ class ResetPasswordTest extends WebTestCase
     public function testResetPasswordCheckEmail()
     {
         $client = static::createClient();
-        $client->request('GET', '/reset-password/check-email');
+        $urlGenerator = $client->getContainer()->get("router");
+        $client->request('GET', $urlGenerator->generate("app_check_email"));
         $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
@@ -60,12 +66,24 @@ class ResetPasswordTest extends WebTestCase
     public function testResetPasswordResetWhithoutToken()
     {
         $client = static::createClient();
-        $client->request('GET', '/reset-password/reset');
+        $urlGenerator = $client->getContainer()->get("router");
+        $client->request('GET', $urlGenerator->generate("app_reset_password"));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function testResetPasswordResetWhithFailToken()
+    public function testResetPasswordResetWhithFailTokenInURL()
     {
+        $client = static::createClient();
+        $token = 'fail';
+        $client->request('GET', '/reset-password/reset/'.$token);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+    
+    public function testResetPasswordResetWhithFailTokenInSession()
+    {
+        
+        $session = new Session(new MockFileSessionStorage());
+        $session->set('token','fail');
         $client = static::createClient();
         $token = 'fail';
         $client->request('GET', '/reset-password/reset/'.$token);
